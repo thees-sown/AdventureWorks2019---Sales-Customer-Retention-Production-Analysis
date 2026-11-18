@@ -58,9 +58,9 @@ group by 1,2
 order by 2,1
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-One row per month label and subcategory, with `qty_item`, `total_sales` (sum of `LineTotal`), and `order_cnt`. Orders that contain multiple subcategories can appear in more than one subcategory count. Sort by a date-based month key if chronological display is needed.
+<img width="503" height="285" alt="1" src="https://github.com/user-attachments/assets/4219f36a-5568-4e1c-bac1-4f90b383c23f" />
 
 ### 2 - Top three subcategories by intended year-over-year unit growth
 
@@ -99,9 +99,9 @@ qualify
   ) <= 3
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-As written, the query groups only by subcategory, so `LAG` compares different subcategory totals rather than the same subcategory across years. Do not interpret this ranking as YoY growth. For a valid ranking, aggregate by subcategory and year, compare against the same subcategory in the previous calendar year, calculate `ROUND(100 * (SAFE_DIVIDE(qty_item, prev_qty) - 1), 2)`, and rank within the target year.
+<img width="413" height="125" alt="2" src="https://github.com/user-attachments/assets/e0237501-f1d4-4a9d-8f8f-3d93fe31707d" />
 
 ### 3 - Top three territories by annual order volume
 
@@ -127,9 +127,9 @@ qualify
 order by yr desc, order_qty desc
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-One row per qualifying year and territory, with `order_qty`. `DENSE_RANK` keeps ties, so a year can return more than three territories. The rank is used to filter rows but is not displayed.
+<img width="475" height="239" alt="3" src="https://github.com/user-attachments/assets/400aacf2-95b3-4c53-907a-52bcc2ec4e9a" />
 
 ### 4 - Seasonal discount cost by subcategory
 
@@ -157,9 +157,9 @@ group by extract(year from h.OrderDate), sc.name
 order by yr
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-One row per year and subcategory with `total_discount_cost`. This is an offer-based estimate, not a measure of promotion profitability.
+<img width="454" height="119" alt="4" src="https://github.com/user-attachments/assets/912a69ca-e6cd-42e3-baaf-46f9dcd2d845" />
 
 ### 5 - Shipped-order customer cohorts in 2014
 
@@ -197,9 +197,9 @@ group by 1, 2
 order by 1, 2
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-One row per observed cohort and month offset, with `customer_cnt`. This is a count, not a retention rate. Divide each later count by the same cohort’s month-zero count to get the rate. The cohort month is not necessarily the customer’s first-ever order, and later cohorts have fewer months observable in 2014.
+<img width="475" height="258" alt="5" src="https://github.com/user-attachments/assets/ff68f52f-4773-4e17-a786-92067175ba32" />
 
 ### 6 - Monthly stocked quantities and change in 2011
 
@@ -229,9 +229,9 @@ where extract(year from o.EndDate) = 2011
 group by p.name,extract(month from o.EndDate),extract(year from o.EndDate)
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-Rows show product name, year, month, `stock_qty`, `stock_prv`, and `diff`. Stocked work-order quantities are not on-hand inventory. The preceding observed month can skip calendar months, and a displayed zero can mean either no change or no comparison.
+<img width="514" height="283" alt="6" src="https://github.com/user-attachments/assets/6fa8115d-909e-4781-8f64-92fd711215fb" />
 
 ### 7 - Monthly stock-to-sales ratio by product in 2011
 
@@ -278,9 +278,9 @@ from sales s1
 order by s1.mth desc, ratio desc
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-The full join preserves stock-only and sales-only matches, but the output selects identifiers from the sales side only. Stock-only rows therefore lack a visible month and product ID. Use `COALESCE` across both sides to retain those keys and `SAFE_DIVIDE` to handle zero denominators. This is a monthly flow ratio, not an inventory balance or a growth rate.
+<img width="537" height="246" alt="7" src="https://github.com/user-attachments/assets/0a7f94c6-1975-461e-855b-6e26d77ebacf" />
 
 ### 8 - Pending purchase orders in 2014
 
@@ -302,9 +302,9 @@ where
 group by extract(year from OrderDate), status
 ```
 
-#### 💡 Query Results — Expected Output
+#### 💡 Query Results
 
-One row for the year and status if matching orders exist, with `order_cnt` and `value`. This measures pending procurement orders in the dataset, not pending customer sales orders or a historical year-end backlog snapshot.
+<img width="466" height="128" alt="8" src="https://github.com/user-attachments/assets/57f8ec88-ebd5-4231-8a48-a956b53ada24" />
 
 ## 🔎 4 - Conclusion & Recommendations
 
